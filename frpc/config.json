@@ -38,6 +38,5 @@
     "log_max_days": "int(1,30)"
   },
   "ports": {},
-  "ports_description": {},
-  "image": "ghcr.io/hassio-addons/base/{arch}"
+  "ports_description": {}
 }
