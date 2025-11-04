@@ -1,27 +1,14 @@
 name: Build and Push Docker Images
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'frpc/Dockerfile'
-      - 'frpc/run.sh'
-      - 'frpc/config.json'
-      - '.github/workflows/build-and-push.yml'
-  pull_request:
-    branches:
-      - main
-    paths:
-      - 'frpc/Dockerfile'
-      - 'frpc/run.sh'
-      - 'frpc/config.json'
-  release:
-    types: [created]
   workflow_dispatch:
     inputs:
       skip_architectures:
         description: 'Skip specific architectures (comma-separated, e.g. aarch64,armhf)'
+        required: false
+        type: string
+      version_tag:
+        description: 'Override version tag (leave empty to use config.json version)'
         required: false
         type: string
 
