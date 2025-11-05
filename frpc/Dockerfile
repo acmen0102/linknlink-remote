@@ -8,6 +8,10 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # Setup base
 ARG FRP_VERSION=0.52.3
 ARG TARGETARCH=amd64
+
+# Copy scripts
+COPY scripts/ /tmp/scripts/
+
 # hadolint ignore=DL3003
 RUN \
     apk add --no-cache --virtual .build-dependencies \
@@ -15,16 +19,7 @@ RUN \
         curl \
     \
     && echo "TARGETARCH=${TARGETARCH}" \
-    && if [ "${TARGETARCH}" = "amd64" ]; then \
-        FRP_ARCH="amd64"; \
-    elif [ "${TARGETARCH}" = "arm64" ] || [ "${TARGETARCH}" = "aarch64" ]; then \
-        FRP_ARCH="arm64"; \
-    elif [ "${TARGETARCH}" = "arm" ] || [ "${TARGETARCH}" = "armv7" ]; then \
-        FRP_ARCH="arm"; \
-    else \
-        echo "Unsupported architecture: ${TARGETARCH}"; \
-        exit 1; \
-    fi \
+    && FRP_ARCH=$(/tmp/scripts/setup_frp.sh "${TARGETARCH}") \
     && echo "FRP_ARCH=${FRP_ARCH}" \
     && FRP_URL="https://github.com/fatedier/frp/releases/download/v${FRP_VERSION}/frp_${FRP_VERSION}_linux_${FRP_ARCH}.tar.gz" \
     && echo "Downloading frp v${FRP_VERSION} for ${FRP_ARCH} from: ${FRP_URL}" \
