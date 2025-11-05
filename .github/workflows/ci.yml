@@ -44,6 +44,9 @@ jobs:
     needs: variables
     env:
       BUILD_ARGS: ${{needs.variables.outputs.BUILD_ARGS}}
+    permissions:
+      contents: read
+      packages: write
     strategy:
       matrix:
         arch: ${{fromJSON(needs.variables.outputs.ARCH_LIST)}}
