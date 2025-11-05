@@ -1,16 +1,6 @@
-#!/usr/bin/with-contenv bashio
+#!/usr/bin/env bashio
 
-# =============================================================================
-# FRPC Add-on for Home Assistant
-# 启动脚本
-# =============================================================================
-
-set -e
-
-# 日志函数
-log() {
-    echo "[$(date +'%Y-%m-%d %H:%M:%S')] $*" >&2
-}
+bashio::log.info "Preparing to start FRPC Client..."
 
 # 从配置中读取参数
 SERVER_ADDR=$(bashio::config 'server_addr')
@@ -36,19 +26,17 @@ THIRD_PARTY_API_SECRET=$(bashio::config 'third_party.api_secret' "")
 
 # 验证必需参数
 if [ -z "$SERVER_ADDR" ]; then
-    log "错误: server_addr 不能为空"
-    exit 1
+    bashio::exit.nok "server_addr cannot be empty"
 fi
 
 if [ -z "$SERVER_PORT" ]; then
-    log "错误: server_port 不能为空"
-    exit 1
+    bashio::exit.nok "server_port cannot be empty"
 fi
 
 # 配置文件路径
 CONFIG_FILE="/config/frpc.toml"
 
-log "正在生成 frpc 配置文件: $CONFIG_FILE"
+bashio::log.info "Generating FRPC configuration file: $CONFIG_FILE"
 
 # 生成 frpc 配置文件 (TOML 格式)
 cat > "$CONFIG_FILE" <<EOF
@@ -90,31 +78,31 @@ customDomains = ["${PROXY_NAME}"]
 EOF
 fi
 
-log "配置文件生成完成:"
-cat "$CONFIG_FILE"
-log "============================"
+bashio::log.info "Configuration file generated successfully"
+bashio::log.debug "Configuration content:"
+cat "$CONFIG_FILE" | bashio::log.debug
 
 # 检查 frpc 可执行文件
 if [ ! -x "/usr/local/bin/frpc" ]; then
-    log "错误: 找不到 frpc 可执行文件"
-    exit 1
+    bashio::exit.nok "FRPC executable not found at /usr/local/bin/frpc"
 fi
 
-log "正在启动 frpc..."
-log "服务器地址: ${SERVER_ADDR}:${SERVER_PORT}"
-log "本地地址: ${LOCAL_IP}:${LOCAL_PORT}"
-log "远程端口: ${REMOTE_PORT}"
-log "代理名称: ${PROXY_NAME}"
-log "协议类型: ${PROTOCOL}"
+bashio::log.info "Starting FRPC..."
+bashio::log.info "Server address: ${SERVER_ADDR}:${SERVER_PORT}"
+bashio::log.info "Local address: ${LOCAL_IP}:${LOCAL_PORT}"
+bashio::log.info "Remote port: ${REMOTE_PORT}"
+bashio::log.info "Proxy name: ${PROXY_NAME}"
+bashio::log.info "Protocol: ${PROTOCOL}"
 
 # 显示预留配置状态（后续实现具体功能）
 if [ "$AUTH_ENABLED" = "true" ]; then
-    log "提示: 私有账号登录功能已启用（功能开发中）"
+    bashio::log.info "Authentication feature enabled (development in progress)"
 fi
 
 if [ "$THIRD_PARTY_ENABLED" = "true" ]; then
-    log "提示: 第三方服务功能已启用（功能开发中）"
+    bashio::log.info "Third-party service feature enabled (development in progress)"
 fi
 
 # 启动 frpc
 exec /usr/local/bin/frpc -c "$CONFIG_FILE"
+

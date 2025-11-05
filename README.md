@@ -22,7 +22,7 @@ FRP 客户端（frpc）加载项，用于建立反向代理连接到 FRP 服务�
 4. 输入您的仓库地址：
 
    ```text
-   https://github.com/Acmen0102/linknlink-remote
+   https://github.com/acmen0102/linknlink-remote
    ```
 
 5. 点击 **添加**
@@ -34,7 +34,7 @@ FRP 客户端（frpc）加载项，用于建立反向代理连接到 FRP 服务�
 ```yaml
 homeassistant:
   addon_repositories:
-    - https://github.com/Acmen0102/linknlink-remote
+    - https://github.com/acmen0102/linknlink-remote
 ```
 
 然后重启 Home Assistant。
@@ -91,7 +91,7 @@ homeassistant:
 2. 创建 GitHub 仓库并推送
 
    ```bash
-   git remote add origin https://github.com/Acmen0102/linknlink-remote.git
+   git remote add origin https://github.com/acmen0102/linknlink-remote.git
    git branch -M main
    git push -u origin main
    ```

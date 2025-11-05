@@ -1,14 +1,14 @@
-ARG BUILD_FROM=ghcr.io/hassio-addons/base:18.2.1
-# hadolint ignore=DL3006
-FROM ${BUILD_FROM}
+ARG BUILD_FROM
+FROM $BUILD_FROM as base
+
+ENV LANG C.UTF-8
+ARG BUILD_VERSION
+ARG FRP_VERSION=0.52.3
 
 # Set shell
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-# Setup base
-ARG FRP_VERSION=0.52.3
-
-# hadolint ignore=DL3003
+# Install dependencies and download FRPC
 RUN \
     apk add --no-cache --virtual .build-dependencies \
         wget \
@@ -46,14 +46,8 @@ RUN \
     && apk del --no-cache --purge \
         .build-dependencies
 
-
-
-# Set environment variables
-ENV LANG=C.UTF-8
-
 # Copy root filesystem
-COPY run.sh /run.sh
-RUN chmod a+x /run.sh
+COPY rootfs /
 
 # Build arguments
 ARG BUILD_ARCH
@@ -81,4 +75,5 @@ LABEL \
     org.opencontainers.image.version="${BUILD_VERSION}"
 
 # Run script
-CMD [ "/run.sh" ]
+ENTRYPOINT [ "/docker-entrypoint.sh" ]
+

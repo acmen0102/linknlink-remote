@@ -1,0 +1,12 @@
+blank_issues_enabled: false
+contact_links:
+  - name: FRPC Client issues
+    url: https://github.com/acmen0102/linknlink-remote/issues
+    about: Issues related to the FRPC Client addon.
+  - name: FRP project issues
+    url: https://github.com/fatedier/frp/issues
+    about: Issues related to the FRP project itself.
+  - name: Questions/discussion
+    url: https://github.com/acmen0102/linknlink-remote/discussions/new
+    about: Ask questions, discuss about usage or show things you made
+

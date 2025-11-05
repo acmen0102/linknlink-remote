@@ -18,7 +18,7 @@
 1. 打开 Home Assistant
 2. 进入 **Supervisor** → **加载项** → **加载项商店**
 3. 点击右上角菜单（三个点）→ **仓库**
-4. 输入仓库地址：`https://github.com/Acmen0102/linknlink-remote`
+4. 输入仓库地址：`https://github.com/acmen0102/linknlink-remote`
 5. 点击 **添加**
 
 ### 2. 安装加载项
