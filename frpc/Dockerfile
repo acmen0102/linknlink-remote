@@ -14,17 +14,22 @@ RUN \
         wget \
         curl \
     \
+    && echo "TARGETARCH=${TARGETARCH}" \
     && case ${TARGETARCH} in \
         "amd64") FRP_ARCH="amd64" ;; \
         "arm64"|"aarch64") FRP_ARCH="arm64" ;; \
-        "arm") FRP_ARCH="arm" ;; \
+        "arm"|"armv7") FRP_ARCH="arm" ;; \
         *) echo "Unsupported architecture: ${TARGETARCH}" && exit 1 ;; \
     esac \
+    && echo "FRP_ARCH=${FRP_ARCH}" \
     && FRP_URL="https://github.com/fatedier/frp/releases/download/v${FRP_VERSION}/frp_${FRP_VERSION}_linux_${FRP_ARCH}.tar.gz" \
     && echo "Downloading frp v${FRP_VERSION} for ${FRP_ARCH} from: ${FRP_URL}" \
-    && wget -q "${FRP_URL}" -O /tmp/frp.tar.gz \
+    && wget -q --timeout=30 --tries=3 "${FRP_URL}" -O /tmp/frp.tar.gz \
     && if [ ! -f /tmp/frp.tar.gz ] || [ ! -s /tmp/frp.tar.gz ]; then \
-        echo "Failed to download frp" && exit 1; \
+        echo "Failed to download frp from ${FRP_URL}" && \
+        echo "File exists: $([ -f /tmp/frp.tar.gz ] && echo 'yes' || echo 'no')" && \
+        echo "File size: $([ -f /tmp/frp.tar.gz ] && ls -lh /tmp/frp.tar.gz | awk '{print $5}' || echo 'N/A')" && \
+        exit 1; \
     fi \
     && tar -xzf /tmp/frp.tar.gz -C /tmp \
     && cp /tmp/frp_*/frpc /usr/local/bin/frpc \
