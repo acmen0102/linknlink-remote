@@ -1,6 +1,21 @@
 # 仓库添加故障排除
 
-## SSL 连接错误
+## 网络连接错误
+
+### 错误类型 1：无法连接到 GitHub
+
+如果遇到类似以下错误：
+```
+Cmd('git') failed due to: exit code(128)
+error: RPC failed; curl 28 Failed to connect to github.com port 443 after 133167 ms: Could not connect to server
+fatal: expected flush after ref listing
+```
+
+这表示 Home Assistant 无法连接到 GitHub 服务器（端口 443）。
+
+**详细解决方案请查看：** [TROUBLESHOOTING_GITHUB_CONNECTION.md](TROUBLESHOOTING_GITHUB_CONNECTION.md)
+
+### 错误类型 2：SSL 连接错误
 
 如果遇到类似以下错误：
 ```
@@ -42,6 +57,7 @@ https://github.com/Acmen0102/linknlink-remote.git
 如果 Home Assistant 服务器使用代理：
 - 确保代理可以访问 GitHub
 - 检查代理的 SSL 证书配置
+- 详细配置方法请参考：[TROUBLESHOOTING_GITHUB_CONNECTION.md](TROUBLESHOOTING_GITHUB_CONNECTION.md)
 
 ### 方案 6：更新 Home Assistant
 确保 Home Assistant 和 Supervisor 都是最新版本：

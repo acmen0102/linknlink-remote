@@ -116,6 +116,7 @@ homeassistant:
 - 确认仓库是公开的
 - 确认 `repository.json` 文件格式正确
 - 检查网络连接
+- **如果遇到连接 GitHub 失败的错误**，请查看：[TROUBLESHOOTING_GITHUB_CONNECTION.md](TROUBLESHOOTING_GITHUB_CONNECTION.md)
 
 ### 加载项无法显示
 
