@@ -1,8 +1,47 @@
-# 触发 Release Workflow 脚本
+# 构建和发布脚本
 
-本目录包含用于触发 `repository_dispatch` 事件的脚本。
+本目录包含用于构建和发布 Release 的脚本。
 
-## 前置要求
+## 快速开始（推荐）
+
+### 使用 build-release.sh 一键构建和发布
+
+这是最便捷的方式，会自动：
+- 递增版本号（patch/minor/major）
+- 更新 `frpc/config.json` 中的版本
+- 可选：提交更改、推送到远程、触发 workflow
+
+```bash
+# 最简单的方式：递增补丁版本，提交并推送
+./scripts/build-release.sh patch --commit --push
+
+# 递增次版本
+./scripts/build-release.sh minor --commit --push
+
+# 递增主版本
+./scripts/build-release.sh major --commit --push
+
+# 指定具体版本号
+./scripts/build-release.sh 1.0.5 --commit --push
+
+# 完整流程：递增版本、提交、推送、触发 workflow
+export GITHUB_TOKEN="your_token_here"
+./scripts/build-release.sh patch --commit --push --trigger
+```
+
+**功能说明：**
+- `patch` - 递增补丁版本 (1.0.1 -> 1.0.2) [默认]
+- `minor` - 递增次版本 (1.0.1 -> 1.1.0)
+- `major` - 递增主版本 (1.0.1 -> 2.0.0)
+- `--commit` - 提交更改到 git
+- `--push` - 推送到远程仓库
+- `--trigger` - 触发 release workflow（需要 GITHUB_TOKEN）
+
+---
+
+## 手动触发 Release Workflow
+
+### 前置要求
 
 1. **生成 GitHub Personal Access Token (PAT)**
    - 访问：https://github.com/settings/tokens
