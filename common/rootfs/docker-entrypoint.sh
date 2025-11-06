@@ -253,7 +253,7 @@ register_frpc_proxy() {
     
     # 构造请求数据
     local server_url="https://euadmin.linklinkiot.com/frpserver/api/proxy"
-    local json_data="{\"did\":\"$device_id\",\"name\":\"hassio\",\"type\":1,\"account\":\"$account\",\"proxyList\":$proxy_json}"
+    local json_data="{\"did\":\"$device_id\",\"name\":\"HA\",\"type\":99,\"account\":\"$account\",\"proxyList\":$proxy_json}"
     
     bashio::log.debug "Registration request: $json_data"
     
@@ -339,9 +339,6 @@ display_device_info() {
     bashio::log.info "=========================================="
     bashio::log.info "  设备ID (Device ID): $device_id"
     bashio::log.info "=========================================="
-    bashio::log.info ""
-    bashio::log.info "设备ID已保存到文件: $device_id_file"
-    bashio::log.info "您可以在 Home Assistant 的配置目录中查看此文件"
     bashio::log.info ""
 }
 
