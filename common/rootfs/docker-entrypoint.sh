@@ -36,6 +36,9 @@ fi
 # 配置文件路径
 CONFIG_FILE="/config/frpc.toml"
 
+# 确保配置目录存在
+mkdir -p "$(dirname "$CONFIG_FILE")"
+
 bashio::log.info "Generating FRPC configuration file: $CONFIG_FILE"
 
 # 生成 frpc 配置文件 (TOML 格式)
