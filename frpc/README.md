@@ -1,49 +1,49 @@
 # Home Assistant Add-on: FRPC Client
 
-通过 LinknLink 平台实现 Home Assistant 的远程访问。
+Enable remote access to Home Assistant through the LinknLink platform.
 
-## 关于
+## About
 
-FRPC Client 是一个简单易用的 Home Assistant 加载项，让您无需复杂配置即可实现远程访问。
+FRPC Client is a simple and easy-to-use Home Assistant add-on that enables remote access without complex configuration.
 
-它通过与 LinknLink IoT 平台集成，自动完成设备注册、代理配置和隧道建立。您只需要提供平台账号，剩下的工作交给它来完成。
+It integrates with the LinknLink IoT platform to automatically complete device registration, proxy configuration, and tunnel establishment. You only need to provide your platform account credentials, and it will handle the rest.
 
-**查看 [文档标签页](#) 了解更多详细信息。**
+**View the [Documentation tab](#) for more detailed information.**
 
-## 功能特性
+## Features
 
-- ✅ **零配置远程访问** - 只需账号密码，自动完成所有设置
-- 🔐 **安全连接** - 使用加密隧道和 HTTPS 通信
-- 🚀 **自动化管理** - 自动设备识别、注册和代理配置
-- 📱 **多平台支持** - 支持 aarch64、amd64、armv7 等多种架构
-- 🔄 **稳定可靠** - 自动重连机制，确保服务持续可用
-- 📊 **清晰日志** - 详细的运行日志，方便排查问题
+- ✅ **Zero-configuration remote access** - Only requires account credentials, automatically completes all settings
+- 🔐 **Secure connection** - Uses encrypted tunnels and HTTPS communication
+- 🚀 **Automated management** - Automatic device identification, registration, and proxy configuration
+- 📱 **Multi-platform support** - Supports aarch64, amd64, armv7, and other architectures
+- 🔄 **Stable and reliable** - Automatic reconnection mechanism ensures continuous service availability
+- 📊 **Clear logs** - Detailed runtime logs for easy troubleshooting
 
-## 安装
+## Installation
 
-### 添加仓库
+### Add Repository
 
-1. 打开 Home Assistant
-2. 进入 **设置** → **加载项** → **加载项商店**
-3. 点击右上角菜单（⋮）→ **仓库**
-4. 添加此仓库 URL：
+1. Open Home Assistant
+2. Go to **Settings** → **Add-ons** → **Add-on Store**
+3. Click the menu icon (⋮) in the top right → **Repositories**
+4. Add this repository URL:
    ```
    https://github.com/acmen0102/linknlink-remote
    ```
-5. 点击 **添加**
+5. Click **Add**
 
-### 安装 Add-on
+### Install Add-on
 
-1. 在加载项商店中找到 **FRPC Client**
-2. 点击进入 Add-on 详情页
-3. 点击 **安装** 按钮
-4. 等待安装完成
+1. Find **FRPC Client** in the Add-on Store
+2. Click to enter the Add-on details page
+3. Click the **Install** button
+4. Wait for installation to complete
 
-## 配置
+## Configuration
 
-安装完成后，需要配置您的 LinknLink 平台账号：
+After installation, you need to configure your LinknLink platform account:
 
-### 必需配置
+### Required Configuration
 
 ```yaml
 authentication:
@@ -51,60 +51,60 @@ authentication:
   password: "your-password"
 ```
 
-**配置说明：**
+**Configuration Description:**
 
-- **email**: 您的 LinknLink 平台账号邮箱
-- **password**: 您的 LinknLink 平台账号密码
+- **email**: Your LinknLink platform account email
+- **password**: Your LinknLink platform account password
 
-> **注意**：如果您还没有 LinknLink 账号，请使用LinknLink APP注册开通。
+> **Note**: If you don't have a LinknLink account yet, please register using the LinknLink APP.
 
-### 启动 Add-on
+### Start Add-on
 
-1. 填写配置后，点击 **保存**
-2. 返回 **信息** 标签页
-3. 点击 **启动** 按钮
-4. 查看 **日志** 确认运行状态
+1. After filling in the configuration, click **Save**
+2. Return to the **Information** tab
+3. Click the **Start** button
+4. Check the **Logs** to confirm the running status
 
-## 使用
+## Usage
 
-启动后，Add-on 会自动：
+After starting, the Add-on will automatically:
 
-1. 获取设备唯一标识
-2. 登录 LinknLink 平台
-3. 注册 Home Assistant 代理服务
-4. 建立远程访问隧道
+1. Get the device unique identifier
+2. Log in to the LinknLink platform
+3. Register the Home Assistant proxy service
+4. Establish a remote access tunnel
 
-您可以在日志中看到设备 ID 和连接状态。
+You can see the device ID and connection status in the logs.
 
-**默认代理配置：**
+**Default Proxy Configuration:**
 
-- **服务名称**: HomeAssistant
-- **本地端口**: 8123
-- **远程端口**: 38123
+- **Service Name**: HomeAssistant
+- **Local Port**: 8123
+- **Remote Port**: 38123
 
-## 支持的架构
+## Supported Architectures
 
-- `aarch64` - ARM 64位（如树莓派 4）
-- `amd64` - x86_64（大多数 PC 和服务器）
-- `armv7` - ARM 32位（较旧的 ARM 设备）
+- `aarch64` - ARM 64-bit (e.g., Raspberry Pi 4)
+- `amd64` - x86_64 (most PCs and servers)
+- `armv7` - ARM 32-bit (older ARM devices)
 
-## 文档
+## Documentation
 
-详细文档请查看 **文档** 标签页，包含：
+For detailed documentation, please check the **Documentation** tab, which includes:
 
-- 完整的配置指南
-- 工作原理说明
-- 故障排除方法
-- 常见问题解答
+- Complete configuration guide
+- How it works
+- Troubleshooting methods
+- Frequently asked questions
 
-## 支持
+## Support
 
-遇到问题？
+Having issues?
 
-- 📖 查看 [文档标签页](#) 中的故障排除部分
-- 🐛 在 [GitHub](https://github.com/acmen0102/linknlink-remote/issues) 提交 Issue
-- 💬 联系 LinknLink 技术支持
+- 📖 Check the troubleshooting section in the [Documentation tab](#)
+- 🐛 Submit an Issue on [GitHub](https://github.com/acmen0102/linknlink-remote/issues)
+- 💬 Contact LinknLink technical support
 
-## 致谢
+## Credits
 
-本 Add-on 基于 [FRP](https://github.com/fatedier/frp) 项目构建。
+This Add-on is built based on the [FRP](https://github.com/fatedier/frp) project.

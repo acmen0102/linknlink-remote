@@ -1,44 +1,44 @@
 # Home Assistant Add-on: FRPC Client
 
-通过 LinknLink 平台，让您轻松实现 Home Assistant 的远程访问。
+Enable easy remote access to Home Assistant through the LinknLink platform.
 
-## 开始使用
+## Getting Started
 
-### 准备工作
+### Prerequisites
 
-在使用本 Add-on 之前，您需要：
+Before using this Add-on, you need:
 
-1. 拥有一个 LinknLink 平台账号（邮箱和密码）
-2. 确保 Home Assistant 正常运行
-3. 确保网络连接正常
+1. A LinknLink platform account (email and password)
+2. Ensure Home Assistant is running normally
+3. Ensure network connection is normal
 
-> **提示**
+> **Tip**
 > 
-> 如果您还没有 LinknLink 账号，请使用LinknLink APP注册开通。
+> If you don't have a LinknLink account yet, please register using the LinknLink APP.
 
-### 启用侧边栏显示（可选）
+### Enable Sidebar Display (Optional)
 
-为了方便访问和管理，您可以将 Add-on 显示在侧边栏：
+For convenient access and management, you can display the Add-on in the sidebar:
 
-1. 进入 `设置` → `加载项` → `FRPC Client`
-2. 开启 **在侧边栏中显示** 选项
+1. Go to `Settings` → `Add-ons` → `FRPC Client`
+2. Enable the **Show in sidebar** option
 
-## 配置
+## Configuration
 
-### 基本配置
+### Basic Configuration
 
-本 Add-on 的配置非常简单，只需要提供 LinknLink 平台的登录凭据。
+This Add-on's configuration is very simple, only requiring LinknLink platform login credentials.
 
-#### 必需参数
+#### Required Parameters
 
-在 Add-on 配置页面中，您需要填写以下信息：
+On the Add-on configuration page, you need to fill in the following information:
 
-- **email**: 您的 LinknLink 平台账号邮箱
-- **password**: 您的 LinknLink 平台账号密码
+- **email**: Your LinknLink platform account email
+- **password**: Your LinknLink platform account password
 
-### 配置示例
+### Configuration Examples
 
-#### 基本示例
+#### Basic Example
 
 ```yaml
 authentication:
@@ -46,142 +46,140 @@ authentication:
   password: "your-password"
 ```
 
-> **注意**
+> **Note**
 > 
-> 密码字段在配置界面中会以密文形式显示，保护您的隐私安全。
+> The password field will be displayed in encrypted form in the configuration interface to protect your privacy and security.
 
-## 工作原理
+## How It Works
 
-FRPC Client Add-on 的工作流程：
+FRPC Client Add-on workflow:
 
-1. **设备识别**: 启动时自动获取设备唯一标识
-2. **平台登录**: 使用您提供的账号密码登录 LinknLink 平台
-3. **代理注册**: 自动向平台注册 Home Assistant 服务（端口 8123）
-4. **建立连接**: 下载并启动 FRPC 客户端，建立反向代理隧道（端口38123）
-5. **保持在线**: 持续维护连接，确保远程访问稳定可用
+1. **Device Identification**: Automatically obtains device unique identifier on startup
+2. **Platform Login**: Uses your provided account credentials to log in to the LinknLink platform
+3. **Proxy Registration**: Automatically registers Home Assistant service (port 8123) with the platform
+4. **Establish Connection**: Downloads and starts FRPC client, establishes reverse proxy tunnel (port 38123)
+5. **Stay Online**: Continuously maintains connection to ensure stable remote access availability
 
-### 设备 ID
+### Device ID
 
-每个设备都有一个唯一的 32 位设备 ID，用于在平台上标识您的 Home Assistant 实例。
+Each device has a unique 32-bit device ID used to identify your Home Assistant instance on the platform.
 
-设备 ID 生成规则：
-- 优先使用网络接口 MAC 地址（补齐至 32 位）
-- 如果 MAC 地址不可用，则使用 UUID
-- 作为最后手段，使用时间戳生成唯一 ID
+Device ID generation rules:
+- Priority: Use network interface MAC address (padded to 32 bits)
+- If MAC address is unavailable, use UUID
+- As a last resort, use timestamp to generate unique ID
 
-您可以在以下位置查看设备 ID：
+You can view the device ID in the following locations:
 
-1. **日志输出**: 启动时会醒目显示
+1. **Log Output**: Displayed prominently on startup
    ```
    ==========================================
-     设备ID (Device ID): xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     Device ID: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
    ==========================================
    ```
 
-## 代理配置
+## Proxy Configuration
 
-### 默认代理规则
+### Default Proxy Rules
 
-Add-on 会自动配置以下代理规则：
+The Add-on automatically configures the following proxy rules:
 
-| 服务名称 | 本地端口 | 远程端口 | 说明 |
-|---------|---------|---------|------|
-| HomeAssistant | 8123 | 38123 | Home Assistant Web 界面 |
+| Service Name | Local Port | Remote Port | Description |
+|-------------|-----------|-------------|-------------|
+| HomeAssistant | 8123 | 38123 | Home Assistant Web Interface |
 
-### 网络模式
+### Network Mode
 
-本 Add-on 使用 **Host 网络模式**，这意味着：
+This Add-on uses **Host network mode**, which means:
 
-- Add-on 容器直接使用宿主机的网络
-- 可以直接访问 `127.0.0.1:8123` 的 Home Assistant 服务
-- 无需额外的网络配置或端口映射
+- The Add-on container directly uses the host machine's network
+- Can directly access Home Assistant service at `127.0.0.1:8123`
+- No additional network configuration or port mapping required
 
-## 日志和调试
+## Logging and Debugging
 
-### 查看日志
+### View Logs
 
-在 Add-on 详情页面的 **日志** 标签页中，您可以看到：
+In the Add-on details page's **Logs** tab, you can see:
 
-- 设备 ID 信息
-- 登录状态
-- 代理注册结果
-- FRPC 连接状态
-- 错误信息（如果有）
+- Device ID information
+- Login status
+- Proxy registration results
+- FRPC connection status
+- Error messages (if any)
 
-### 调试级别
+### Debug Level
 
-默认情况下，日志会显示关键的运行信息。如果遇到问题，可以：
+By default, logs display critical runtime information. If you encounter issues, you can:
 
-1. 查看完整日志输出
-2. 检查是否有错误或警告信息
-3. 记录错误信息以便排查
+1. View complete log output
+2. Check for error or warning messages
+3. Record error messages for troubleshooting
 
-## 故障排除
+## Troubleshooting
 
-### 登录失败
+### Login Failure
 
-如果提示账号或密码错误：
+If prompted that account or password is incorrect:
 
-1. 确认邮箱和密码填写正确
-2. 检查账号是否已在 LinknLink 平台开通
-3. 联系管理员确认账号状态
+1. Confirm email and password are filled in correctly
+2. Check if the account has been activated on the LinknLink platform
+3. Contact administrator to confirm account status
 
-> **常见错误**
+> **Common Errors**
 > 
-> - **账号不存在（status: -46009）**: 表示该邮箱未在平台注册，请使用LinknLink APP注册账号
-> - **密码错误**: 请检查密码是否正确（注意大小写）
+> - **Account does not exist (status: -46009)**: Indicates the email is not registered on the platform, please register an account using the LinknLink APP
+> - **Password error**: Please check if the password is correct (note case sensitivity)
 
-### 连接失败
+### Connection Failure
 
-如果 FRPC 无法建立连接：
+If FRPC cannot establish a connection:
 
-1. 检查网络连接是否正常
-2. 确认可以访问 `euhome.linklinkiot.com`
-3. 查看日志中的详细错误信息
-4. 尝试重启 Add-on
+1. Check if network connection is normal
+2. Confirm you can access `euhome.linklinkiot.com`
+3. View detailed error messages in the logs
+4. Try restarting the Add-on
 
-### 代理注册失败
+### Proxy Registration Failure
 
-如果代理注册返回错误：
+If proxy registration returns an error:
 
-1. 确认登录成功（检查日志中的User ID）
-2. 查看完整的错误响应信息
-3. 联系技术支持
+1. Confirm login was successful (check User ID in logs)
+2. View complete error response information
+3. Contact technical support
 
+## Advanced Features
 
-## 高级功能
+### Security
 
-### 安全性
+This Add-on's security considerations:
 
-本 Add-on 在安全性方面的考虑：
+1. **Password Encryption**: Password uses SHA1 + Salt encryption for transmission during login
+2. **HTTPS Connection**: All API calls use HTTPS encryption
+3. **Encrypted Storage**: Password is displayed in encrypted form in the configuration interface
+4. **Secure Transmission**: FRPC connection uses encrypted tunnel
 
-1. **密码加密**: 登录时密码使用 SHA1 + Salt 加密传输
-2. **HTTPS 连接**: 所有 API 调用均使用 HTTPS 加密
-3. **密文存储**: 密码在配置界面以密文形式显示
-4. **安全传输**: FRPC 连接使用加密隧道
-
-## 更新日志
+## Changelog
 
 ### v1.0.0
 
-- 首次发布
-- 支持 LinknLink 平台自动登录和注册
-- 自动配置 Home Assistant 反向代理
+- Initial release
+- Support for LinknLink platform automatic login and registration
+- Automatic Home Assistant reverse proxy configuration
 
-## 技术支持
+## Technical Support
 
-如果您遇到问题：
+If you encounter issues:
 
-1. 查看本文档的故障排除部分
-2. 检查日志中的详细错误信息
-3. 在 [GitHub Issues](https://github.com/acmen0102/linknlink-remote/issues) 提交问题
-4. 联系 LinknLink 平台技术支持
+1. Check the troubleshooting section of this document
+2. Check detailed error messages in the logs
+3. Submit an issue on [GitHub Issues](https://github.com/acmen0102/linknlink-remote/issues)
+4. Contact LinknLink platform technical support
 
 ---
 
-## 致谢
+## Credits
 
-- [FRP 项目](https://github.com/fatedier/frp) - 提供反向代理核心功能
-- LinknLink IoT 平台 - 提供设备管理和代理服务
-- Home Assistant 社区 - 提供 Add-on 开发框架和支持
-
+- [FRP Project](https://github.com/fatedier/frp) - Provides reverse proxy core functionality
+- LinknLink IoT Platform - Provides device management and proxy services
+- Home Assistant Community - Provides Add-on development framework and support
