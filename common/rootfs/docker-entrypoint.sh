@@ -271,7 +271,7 @@ register_frpc_proxy() {
     
     # 构造请求数据
     local server_url="https://euadmin.linklinkiot.com/frpserver/api/proxy"
-    local json_data="{\"did\":\"$device_id\",\"name\":\"HA\",\"type\":99,\"account\":\"$account\",\"proxyList\":$proxy_json}"
+    local json_data="{\"did\":\"$device_id\",\"name\":\"HA\",\"type\":99,\"account\":\"$account\",\"heartbeat\":1,\"proxyList\":$proxy_json}"
     
     bashio::log.debug "Registration request: $json_data"
     
