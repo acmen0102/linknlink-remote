@@ -173,7 +173,7 @@ login() {
     local login_data="{\"email\":\"$account\",\"password\":\"$encrypted_password\"}"
     
     bashio::log.debug "Login request URL: $login_url"
-    bashio::log.debug "Login request data: $login_data"
+    # bashio::log.debug "Login request data: $login_data"
     
     local http_response
     local http_code
@@ -196,7 +196,7 @@ login() {
     response=$(echo "$http_response" | head -n -1)
     
     bashio::log.debug "Login HTTP status code: $http_code"
-    bashio::log.debug "Login response: $response"
+    # bashio::log.debug "Login response: $response"
     
     # 检查HTTP状态码
     if [ "$http_code" != "200" ]; then
@@ -426,7 +426,19 @@ fi
 bashio::log.info "Starting FRPC..."
 bashio::log.info "Configuration file: $CONFIG_FILE"
 bashio::log.debug "Configuration content:"
-cat "$CONFIG_FILE" | bashio::log.debug
+if [ -f "$CONFIG_FILE" ]; then
+    # 逐行输出配置内容，并隐藏敏感的 token 字段
+    while IFS= read -r line || [ -n "$line" ]; do
+        sanitized_line="$line"
+        if [[ "$sanitized_line" == *"token"* ]]; then
+            sanitized_line=$(echo "$sanitized_line" | sed -E 's/(token[[:space:]]*=[[:space:]]*")[^"]+(")/\1*****\2/')
+            sanitized_line=$(echo "$sanitized_line" | sed -E 's/("token"[[:space:]]*:[[:space:]]*")[^"]+(")/\1*****\2/')
+        fi
+        bashio::log.debug "$sanitized_line"
+    done < "$CONFIG_FILE"
+else
+    bashio::log.warning "Configuration file not found: $CONFIG_FILE"
+fi
 
 # 清理临时目录
 cd / || exit 1
