@@ -18,6 +18,8 @@ fi
 # 配置文件路径
 CONFIG_FILE="/config/frpc.toml"
 TEMP_DIR="/tmp/frpc_setup"
+HEARTBEAT_SCRIPT="/usr/local/bin/frpc-heartbeat.sh"
+HEARTBEAT_INTERVAL=30
 mkdir -p "$TEMP_DIR"
 cd "$TEMP_DIR" || exit 1
 
@@ -373,5 +375,63 @@ cd / || exit 1
 rm -rf "$TEMP_DIR"
 
 # 启动 frpc
-exec /usr/local/bin/frpc -c "$CONFIG_FILE"
+/usr/local/bin/frpc -c "$CONFIG_FILE" &
+FRPC_PID=$!
+
+bashio::log.info "FRPC started with PID: $FRPC_PID"
+
+cleanup() {
+    local exit_code=${1:-0}
+
+    bashio::log.info "Stopping FRPC heartbeat and process..."
+
+    if [ -n "${HEARTBEAT_PID:-}" ]; then
+        kill "$HEARTBEAT_PID" 2>/dev/null || true
+        wait "$HEARTBEAT_PID" 2>/dev/null || true
+    fi
+
+    if kill -0 "$FRPC_PID" 2>/dev/null; then
+        kill "$FRPC_PID" 2>/dev/null || true
+        wait "$FRPC_PID" 2>/dev/null || true
+    fi
+
+    if [ -x "$HEARTBEAT_SCRIPT" ]; then
+        "$HEARTBEAT_SCRIPT" "$DEVICE_ID" "$COMPANY_ID" "$USER_ID"
+    fi
+
+    exit "$exit_code"
+}
+
+trap 'cleanup 0' SIGTERM SIGINT
+
+if [ -x "$HEARTBEAT_SCRIPT" ]; then
+    bashio::log.info "Starting FRPC heartbeat task (interval ${HEARTBEAT_INTERVAL}s)..."
+    (
+        while true; do
+            "$HEARTBEAT_SCRIPT" "$DEVICE_ID" "$COMPANY_ID" "$USER_ID" "$FRPC_PID" || true
+            sleep "$HEARTBEAT_INTERVAL" &
+            wait $!
+        done
+    ) &
+    HEARTBEAT_PID=$!
+else
+    bashio::log.warning "Heartbeat script not found or not executable: $HEARTBEAT_SCRIPT"
+fi
+
+wait "$FRPC_PID"
+FRPC_EXIT_CODE=$?
+
+bashio::log.info "FRPC process exited with code: $FRPC_EXIT_CODE"
+
+if [ -n "${HEARTBEAT_PID:-}" ]; then
+    kill "$HEARTBEAT_PID" 2>/dev/null || true
+    wait "$HEARTBEAT_PID" 2>/dev/null || true
+fi
+
+# 上报最终一次心跳，标记为未运行
+if [ -x "$HEARTBEAT_SCRIPT" ]; then
+    "$HEARTBEAT_SCRIPT" "$DEVICE_ID" "$COMPANY_ID" "$USER_ID"
+fi
+
+exit "$FRPC_EXIT_CODE"
 
