@@ -172,7 +172,7 @@ login() {
     local login_url="https://euhome.linklinkiot.com/sfsaas/api/user/pwdlogin"
     local login_data="{\"email\":\"$account\",\"password\":\"$encrypted_password\"}"
     
-    bashio::log.debug "Login request URL: $login_url"
+    # bashio::log.debug "Login request URL: $login_url"
     # bashio::log.debug "Login request data: $login_data"
     
     local http_response
@@ -195,7 +195,7 @@ login() {
     http_code=$(echo "$http_response" | tail -n1)
     response=$(echo "$http_response" | head -n -1)
     
-    bashio::log.debug "Login HTTP status code: $http_code"
+    # bashio::log.debug "Login HTTP status code: $http_code"
     # bashio::log.debug "Login response: $response"
     
     # 检查HTTP状态码
@@ -333,7 +333,7 @@ register_frpc_proxy() {
     content=$(echo "$http_response" | head -n -1)
     
     bashio::log.debug "Registration response code: $http_code"
-    bashio::log.debug "Registration response: $content"
+    # bashio::log.debug "Registration response: $content"
     
     # 检查HTTP状态码
     if [ "$http_code" != "200" ]; then
